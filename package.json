@@ -24,7 +24,8 @@
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.2.0",
     "yup": "^1.6.1",
-    "yup-password": "^0.4.0"
+    "yup-password": "^0.4.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
