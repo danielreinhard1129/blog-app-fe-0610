@@ -1,14 +1,24 @@
 import { Badge } from "@/components/ui/badge";
+import useDeleteBlog from "@/hooks/api/blog/useDeleteBlog";
+import { useAuthStore } from "@/stores/auth";
 import { Blog } from "@/types/blog";
-import { FC } from "react";
 import { format } from "date-fns";
 import Image from "next/image";
+import { FC } from "react";
+import ModalDeleteBlog from "./ModalDeleteBlog";
 
 interface BlogDetailHeaderProps {
   blog: Blog;
 }
 
 const BlogDetailHeader: FC<BlogDetailHeaderProps> = ({ blog }) => {
+  const { user } = useAuthStore();
+  const { mutateAsync: deleteBlog, isPending } = useDeleteBlog();
+
+  const handleDeleteBlog = async () => {
+    await deleteBlog(blog.id);
+  };
+
   return (
     <section className="mt-10 space-y-2">
       <Badge
@@ -20,10 +30,16 @@ const BlogDetailHeader: FC<BlogDetailHeaderProps> = ({ blog }) => {
 
       <h1 className="text-3xl font-bold">{blog.title}</h1>
 
-      <p className="font-extralight">
-        {format(new Date(blog.createdAt), "dd MMM yyyy")} -{" "}
-        <span className="capitalize">{blog.user?.name}</span>
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="font-extralight">
+          {format(new Date(blog.createdAt), "dd MMM yyyy")} -{" "}
+          <span className="capitalize">{blog.user?.name}</span>
+        </p>
+
+        {user?.id === blog.userId && (
+          <ModalDeleteBlog isPending={isPending} onClick={handleDeleteBlog} />
+        )}
+      </div>
 
       <div className="relative h-[360px]">
         <Image
