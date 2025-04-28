@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NuqsProvider from "@/providers/NuqsProvider";
+import TokenProvider from "@/providers/TokenProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,10 @@ export default function RootLayout({
       >
         <ReactQueryProvider>
           <NuqsProvider>
-            <Navbar />
-            {children}
+            <TokenProvider>
+              <Navbar />
+              {children}
+            </TokenProvider>
           </NuqsProvider>
         </ReactQueryProvider>
 
