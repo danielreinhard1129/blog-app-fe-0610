@@ -1,15 +1,16 @@
 "use client";
 
 import { axiosInstance } from "@/lib/axios";
-import { useAuthStore } from "@/stores/auth";
+import { getSession, signOut } from "next-auth/react";
 import { useEffect } from "react";
 
 const useAxios = () => {
-  const { accessToken, clearAuth } = useAuthStore();
-
   useEffect(() => {
     const requestIntercept = axiosInstance.interceptors.request.use(
-      (config) => {
+      async (config) => {
+        const session = await getSession();
+        const accessToken = session?.user.accessToken;
+
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
         }
@@ -26,8 +27,12 @@ const useAxios = () => {
         return response;
       },
       (err) => {
-        if (err?.response.status === 401) {
-          clearAuth();
+        if (
+          err?.response.data.message === "No token provided" ||
+          err?.response.data.message === "Token expired" ||
+          err?.response.data.message === "Invalid Token"
+        ) {
+          signOut();
         }
 
         return Promise.reject(err);
@@ -38,7 +43,7 @@ const useAxios = () => {
       axiosInstance.interceptors.request.eject(requestIntercept);
       axiosInstance.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken, clearAuth]);
+  }, []);
 
   return { axiosInstance };
 };
