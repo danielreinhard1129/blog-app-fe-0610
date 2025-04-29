@@ -41,7 +41,7 @@ const BlogDetailHeader: FC<BlogDetailHeaderProps> = ({ blog }) => {
         )}
       </div>
 
-      <div className="relative h-[360px]">
+      <div className="relative h-[220px] md:h-[360px]">
         <Image
           src={blog.thumbnail}
           alt="thumbnail"

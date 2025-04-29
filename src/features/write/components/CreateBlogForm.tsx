@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import useCreateBlog from "@/hooks/api/blog/useCreateBlog";
 import { useFormik } from "formik";
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { CreateBlogSchema } from "../schemas";
@@ -111,19 +112,23 @@ const CreateBlogForm = () => {
       />
 
       {selectedImage ? (
-        <>
-          <div className="relative h-[150px] w-[200px]">
-            <Image
-              src={selectedImage}
-              alt="thumbnail"
-              className="object-cover"
-              fill
-            />
-          </div>
-          <Button variant="destructive" type="button" onClick={removeThumbnail}>
-            Remove
+        <div className="relative h-[150px] w-[200px]">
+          <Image
+            src={selectedImage}
+            alt="thumbnail"
+            className="object-cover"
+            fill
+          />
+          <Button
+            className="absolute -top-2 -right-2 rounded-full"
+            size="icon"
+            variant="destructive"
+            type="button"
+            onClick={removeThumbnail}
+          >
+            <Trash2 />
           </Button>
-        </>
+        </div>
       ) : (
         <div className="grid gap-2">
           <Label htmlFor="thumbnail">Thumbnail</Label>
