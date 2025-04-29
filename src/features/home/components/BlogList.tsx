@@ -48,7 +48,7 @@ const BlogList = () => {
 
       {!!blogs && !!blogs.data.length && (
         <div className="space-y-8">
-          <section className="mt-10 grid grid-cols-3 gap-8">
+          <section className="mt-10 grid gap-8 md:grid-cols-3">
             {blogs.data.map((blog) => (
               <BlogCard key={blog.id} blog={blog} />
             ))}
