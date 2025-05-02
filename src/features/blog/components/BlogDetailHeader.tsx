@@ -1,9 +1,12 @@
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import useDeleteBlog from "@/hooks/api/blog/useDeleteBlog";
 import { Blog } from "@/types/blog";
 import { format } from "date-fns";
+import { Edit } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { FC } from "react";
 import ModalDeleteBlog from "./ModalDeleteBlog";
 
@@ -37,7 +40,14 @@ const BlogDetailHeader: FC<BlogDetailHeaderProps> = ({ blog }) => {
         </p>
 
         {Number(session.data?.user?.id) === blog.userId && (
-          <ModalDeleteBlog isPending={isPending} onClick={handleDeleteBlog} />
+          <div className="space-x-1">
+            <Link href={`/blogs/${blog.slug}/edit`}>
+              <Button variant="outline" size="icon">
+                <Edit />
+              </Button>
+            </Link>
+            <ModalDeleteBlog isPending={isPending} onClick={handleDeleteBlog} />
+          </div>
         )}
       </div>
 
